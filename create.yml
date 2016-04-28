@@ -1,0 +1,13 @@
+# Ansible_Test
+---
+# required parameters are env_name
+- include: ../../aws/ec2/new.yml
+  vars:
+    service_name: test
+    instance_type: r3.8xlarge
+    key_name: Newlogstash
+    volume_store: 
+        - device_name: /dev/xvda
+          volume_size: 20
+          device_type: gp2
+          delete_on_termination: true
