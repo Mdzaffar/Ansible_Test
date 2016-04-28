@@ -1,0 +1,27 @@
+# Ansible_Test
+---
+  # required parameters are env_name
+- include: ../../aws/ec2/new.yml
+  vars:
+    service_name: Apache_test
+    instance_type: t2.micro
+    key_name: Newlogstash
+    volume_store: 
+        - device_name: /dev/xvda
+          volume_size: 20
+          device_type: gp2
+          delete_on_termination: true
+# install the key
+- include: ../../ssh/install.yml
+  vars:
+      key_name: Newlogstash
+# Spin up servers, install dependencies, create mount points
+- hosts: Ansible_test-{{ env_name }}-launched
+  gather_facts: true
+  become: yes
+  become_method: sudo
+  tasks:
+      - name: ensure apache is at the latest version
+          yum: name: httpd
+        state: latest
+      
